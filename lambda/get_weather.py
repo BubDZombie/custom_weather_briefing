@@ -45,15 +45,24 @@ def read_briefing(config):
 	}
 	return(alexa_response)
 
+def get_dynamo_table():
+	dynamo = boto3.resource('dynamodb', region_name='us-east-1')
+	return(dynamo.Table('weather_settings'))
+
 def get_config(user_id):
-	dynamo = boto3.resource('dynamodb', region_name='us-east-1', endpoint_url='dynamodb.us-east-1.amazonaws.com')
-	table = dynamo.Table('weather_settings')
-	try:
-		response = table.get_item(Key=user_id)
-	except ClientError as e:
-		return({'city': None, 'state': None, 'highlights': []})
-	else:
+	table = get_dynamo_table()
+	response = table.get_item(Key={'user_id': user_id})
+	if('Item' in response):
 		return(response['Item'])
+	else:
+		config = {'user_id': user_id, 'city': None, 'state': None, 'highlights': []}
+		set_config(config)
+		return(config)
+
+def set_config(config):
+	table = get_dynamo_table()
+	table.put_item(Item=config)
 
 if(__name__ == '__main__'):
-	print('{0}'.format(lambda_handler(None, None)))
+	set_config({'user_id': 'matt', 'city': 'Fair_Lawn', 'state': 'NJ', 'highlights': ['7:00 AM', '8:00 AM']})
+	print('{0}'.format(get_config('matt')))
