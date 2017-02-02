@@ -1,7 +1,40 @@
 {
   "intents": [
     {
-      "intent": "CustomWeatherBriefing"
+      "intent": "FiveCast"
+    },
+    {
+      "intent": "SetCity",
+      "slots": [
+        {
+          "name": "City",
+          "type": "AMAZON.US_CITY"
+        }
+      ]
+    },
+    {
+      "intent": "GetCity"
+    },
+    {
+      "intent": "AddHighlight",
+      "slots": [
+        {
+          "name": "Time",
+          "type": "AMAZON.TIME"
+        }
+      ]
+    },
+    {
+      "intent": "RemoveHighlight",
+      "slots": [
+        {
+          "name": "Time",
+          "type": "AMAZON.TIME"
+        }
+      ]
+    },
+  {
+      "intent": "GetHighlights"
     }
   ]
 }

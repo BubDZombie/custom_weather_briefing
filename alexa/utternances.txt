@@ -1,1 +1,16 @@
-CustomWeatherBriefing go
+FiveCast five cast
+SetCity set my city to {City}
+SetCity I would like weather for {City}
+SetCity my city is {City}
+SetCity my town is {City}
+SetCity I am in {City}
+GetCity what is my city
+GetCity what is my current city
+GetCity read me my city
+AddHighlight add highlight {Time}
+AddHighlight add {Time} to my list
+AddHighlight I want weather for {Time}
+RemoveHighlight remove highlight {Time}
+RemoveHighlight take {Time} away
+GetHighlights get highlights
+GetHighlights what are my times

@@ -7,7 +7,27 @@ import os
 import urllib2
 
 def lambda_handler(event, context):
-	return(read_briefing({'state': 'NJ', 'city': 'Fair_Lawn', 'highlights': ['7:00 AM', '12:00 PM', '6:00 PM', '11:00 PM']}))
+	user_id = event['user']['user_id']
+	config = get_config(user_id)
+	intent = event['resquest']['intent']['name']
+	if(intent == 'FiveCast'
+			and config.get('state', None)
+			and config.get('city', None)
+			and config.get('highlights', None)):
+		read_briefing(config)
+	elif(intent == 'FiveCast'):
+		help()
+	elif(intent == 'SetCity'):
+		config['city'] = config['request']['intent']['slots']['city']['value']
+		set_config(config)
+	elif(intent == 'GetCity'):
+		#TODO
+	elif(intent == 'AddHighlight'):
+		#TODO
+	elif(intent == 'RemoveHighlight'):
+		#TODO
+	elif(intent == 'GetHighlights'):
+		#TODO
 
 def read_briefing(config):
 	state = config['state']
@@ -32,18 +52,19 @@ def read_briefing(config):
 				temp=hour['feelslike']['english'],
 				condition=hour['condition']))
 
-	# Build the Alexa response.
-	alexa_response = {
+	return(build_response(' '.join(highlight_responses), True))
+
+def build_response(text, should_end_session=False):
+	return({
 		'version': '1.0',
 		'response': {
 			'outputSpeech': {
 				'type': 'PlainText',
-				'text': ' '.join(highlight_responses)
+				'text': text
 			},
-			'shouldEndSession': True
+			'shouldEndSession': should_end_session
 		}
-	}
-	return(alexa_response)
+	})
 
 def get_dynamo_table():
 	dynamo = boto3.resource('dynamodb', region_name='us-east-1')
@@ -64,5 +85,4 @@ def set_config(config):
 	table.put_item(Item=config)
 
 if(__name__ == '__main__'):
-	set_config({'user_id': 'matt', 'city': 'Fair_Lawn', 'state': 'NJ', 'highlights': ['7:00 AM', '8:00 AM']})
-	print('{0}'.format(get_config('matt')))
+	print('{0}'.format(read_briefing({'user_id': 'matt', 'city': 'Fair_Lawn', 'state': 'NJ', 'highlights': ['7:00 AM', '8:00 AM', '10:00 PM']})))
