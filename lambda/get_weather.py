@@ -6,6 +6,29 @@ import json
 import os
 import urllib2
 
+help_message = '''
+Welcome to five cast. Set your state by saying set state, like five cast set state New Jersey.
+Set your city by saying set city, like five cast set city Fair Lawn.
+Tell five cast what part of the day to highlight by saying add highlight, like five cast add highlight 7 A.M.
+Remove a highlight by saying remove higlight, like five cast remove highlight 7 A.M.
+Turn five cast off by saying stop.
+'''
+get_city_message = '''
+Your city is currently {city}.
+'''
+get_state_message = '''
+Your state is currently {state}.
+'''
+get_highlights_message = '''
+Your highlights are currently {highlights}.
+'''
+no_weather_message = '''
+I'm sorry, I couldn't find weather for {city}, {state}.
+'''
+stop_message = '''
+Thank you for using Five Cast!
+'''
+
 def lambda_handler(event, context):
 	user_id = event['session']['user']['userId']
 	config = get_config(user_id)
@@ -16,43 +39,92 @@ def lambda_handler(event, context):
 			and config.get('highlights', None)):
 		read_briefing(config)
 	elif(intent == 'FiveCast'):
-		help()
+		return(build_response(help_message))
 	elif(intent == 'SetCity'):
 		config['city'] = event['request']['intent']['slots']['City']['value']
 		set_config(config)
+                return(get_city(config))
 	elif(intent == 'GetCity'):
-		#TODO
-                pass
+                return(get_city(config))
+        elif(intent == 'SetState'):
+                config['state'] = event['request']['intent']['slots']['State']['value']
+                set_config(config)
+                return(get_state(config))
+        elif(intent == 'GetState'):
+                return(get_state(config))
 	elif(intent == 'AddHighlight'):
-		#TODO
-                pass
+                config = add_highlight(event['request']['intent']['slots']['Time']['value'], config)
+                return(get_highlights(config))
 	elif(intent == 'RemoveHighlight'):
-		#TODO
-                pass
+                config = remove_highlight(event['request']['intent']['slots']['Time']['value'], config)
+                return(get_highlights(config))
 	elif(intent == 'GetHighlights'):
-		#TODO
-                pass
-	elif(intent == 'SayCity'):
-		city = event['request']['intent']['slots']['City']['value']
-                response = []
-                for slot_name, slot_value in event['request']['intent']['slots'].iteritems():
-                        response.append(slot_name)
-                        for key, value in slot_value.iteritems():
-                                response.extend([key, value])
-		return(build_response('Hello, Dave, the city is {city}.'.format(city=' '.join(response))))
+                return(get_highlights(config))
+        elif(intent == 'Stop'):
+                return(build_response(stop_message, True))
+        else:
+                return(build_response(help_message))
+
+def get_city(config):
+        city = config.get('city', 'not set')
+        if(not city):
+                city = 'not set'
+        return(build_response(get_city_message.format(city=city)))
+
+def get_state(config):
+        state = config.get('state', 'not set')
+        if(not state):
+                state = 'not set'
+        return(build_response(get_state_message.format(state=state)))
+
+def compare_times(time_a, time_b):
+        pass
+
+def add_highlight(time, config):
+        if(not time in config['highlights']):
+                config['highlights'].append(time)
+                set_config(config)
+        return(config)
+
+def remove_highlight(time, config):
+        config['highlights'].remove(time)
+        set_config(config)
+        return(config)
+
+def get_highlights(config):
+        highlights = None
+        if(not config.get('highlights', None)):
+                highlights = 'not set'
+        elif(len(config['highlights']) > 1):
+                config['highlights'].insert(-1, 'and')
+                highlights = ', '.join(config['highlights'])
+        else:
+                highlights = ', '.join(config['highlights'])
+        return(build_response(get_highlights_message.format(highlights=highlights)))
+
+def debug_slots(event):
+        response = []
+        for slot_name, slot_value in event['request']['intent']['slots'].iteritems():
+                response.append(slot_name)
+                for key, value in slot_value.iteritems():
+                        response.extend([key, value])
+        return(build_response('Slots are {slots}.'.format(slots=' '.join(response))))
 
 def read_briefing(config):
 	state = config['state']
-	city = config['city']
+	city = '_'.join([word.capitalize() for word in config['city'].split()])
 	highlights = config['highlights']
 
-	# Get the hourly weather forecast from the Weather Underground API.
-	url = 'http://api.wunderground.com/api/{key}/hourly/q/{state}/{city}.json'.format(
-		key=os.environ['WUNDERGROUND_KEY'],
-		state=state,
-		city=city)
-	wunderground_response = urllib2.urlopen(url)
-	wunderground_response = json.loads(wunderground_response.read())
+        try:
+                # Get the hourly weather forecast from the Weather Underground API.
+                url = 'http://api.wunderground.com/api/{key}/hourly/q/{state}/{city}.json'.format(
+                        key=os.environ['WUNDERGROUND_KEY'],
+                        state=state,
+                        city=city)
+                wunderground_response = urllib2.urlopen(url)
+                wunderground_response = json.loads(wunderground_response.read())
+        except:
+                return(build_response(no_weather_message.format(city=config['city'], state=config['state'])))
 
 	# Get details for each highlight time.
 	today = wunderground_response['hourly_forecast'][0]['FCTTIME']['mday']
@@ -95,36 +167,3 @@ def get_config(user_id):
 def set_config(config):
 	table = get_dynamo_table()
 	table.put_item(Item=config)
-
-if(__name__ == '__main__'):
-        payload = {
-  "session": {
-    "sessionId": "SessionId.9744c5f0-958c-4cb0-b7eb-973cfc38e3e0",
-    "application": {
-      "applicationId": "amzn1.ask.skill.9fedf725-c488-4481-9fc1-91f7b35bb064"
-    },
-    "attributes": {},
-    "user": {
-      "userId": "amzn1.ask.account.AHE7DVOH2ALI3QASZVPSGM2M7WJ55W637R2H66UOQRKHRGI5K6VPGYCYJD3IIPSGNLQS7RP7CATH4QH7KGDQJOFQWHXBPUBLS7EBMNCKD6CLV4LPPOOZVX54UA7LABYAI3KFDMLX2II7M7EAU3MDYBO4OQYEDNQDOOOEFBO3PHR2QDVLF5DCKT3FUVUMJ2YQTZTEBVKKOWJDHWQ"
-    },
-    "new": False
-  },
-  "request": {
-    "type": "IntentRequest",
-    "requestId": "EdwRequestId.e0b510e7-fe1b-4679-92a9-90219f088130",
-    "locale": "en-US",
-    "timestamp": "2017-02-04T03:38:06Z",
-    "intent": {
-      "name": "SayCity",
-      "slots": {
-        "City": {
-          "name": "City",
-          "value": "farfigflugen"
-        }
-      }
-    }
-  },
-  "version": "1.0"
-}
-
-	print('{0}'.format(lambda_handler(payload, None)))
