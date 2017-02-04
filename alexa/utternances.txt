@@ -1,12 +1,18 @@
 FiveCast five cast
 SetCity set my city to {City}
-SetCity I would like weather for {City}
+SetCity set city to {City}
 SetCity my city is {City}
 SetCity my town is {City}
 SetCity I am in {City}
 GetCity what is my city
 GetCity what is my current city
 GetCity read me my city
+SetState set my state to {State}
+SetState set state to {State}
+SetState my state is {State}
+GetState what is my state
+GetState what is my current state
+GetState read me my state
 SayCity say the city {City}
 AddHighlight add highlight {Time}
 AddHighlight add {Time} to my list
@@ -15,3 +21,4 @@ RemoveHighlight remove highlight {Time}
 RemoveHighlight take {Time} away
 GetHighlights get highlights
 GetHighlights what are my times
+Stop stop

@@ -1,49 +1,55 @@
 {
-  "intents": [
-    {
-      "intent": "FiveCast"
-    },
-    {
-      "intent": "SetCity",
-      "slots": [
-        {
-          "name": "City",
-          "type": "AMAZON.US_CITY"
-        }
-      ]
-    },
-    {
-      "intent": "GetCity"
-    },
-    {
-      "intent": "SayCity",
-      "slots": [
-        {
-          "name": "City",
-          "type": "AMAZON.US_CITY"
-        }
-      ]
-    },
-    {
-      "intent": "AddHighlight",
-      "slots": [
-        {
-          "name": "Time",
-          "type": "AMAZON.TIME"
-        }
-      ]
-    },
-    {
-      "intent": "RemoveHighlight",
-      "slots": [
-        {
-          "name": "Time",
-          "type": "AMAZON.TIME"
-        }
-      ]
-    },
-  {
-      "intent": "GetHighlights"
-    }
-  ]
+    "intents": [
+	{
+	    "intent": "FiveCast"
+	},
+	{
+	    "intent": "SetCity",
+	    "slots": [
+		{
+		    "name": "City",
+		    "type": "AMAZON.US_CITY"
+		}
+	    ]
+	},
+	{
+	    "intent": "GetCity"
+	},
+	{
+	    "intent": "SetState",
+	    "slots": [
+		{
+		    "name": "City",
+		    "type": "AMAZON.US_STATE"
+		}
+	    ]
+	},
+	{
+	    "intent": "GetState"
+	},
+	{
+	    "intent": "AddHighlight",
+	    "slots": [
+		{
+		    "name": "Time",
+		    "type": "AMAZON.TIME"
+		}
+	    ]
+	},
+	{
+	    "intent": "RemoveHighlight",
+	    "slots": [
+		{
+		    "name": "Time",
+		    "type": "AMAZON.TIME"
+		}
+	    ]
+	},
+	{
+	    "intent": "GetHighlights"
+	},
+	{
+	    "intent": "Stop"
+	}
+    ]
 }
