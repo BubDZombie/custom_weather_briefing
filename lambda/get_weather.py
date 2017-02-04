@@ -22,12 +22,16 @@ def lambda_handler(event, context):
 		set_config(config)
 	elif(intent == 'GetCity'):
 		#TODO
+                pass
 	elif(intent == 'AddHighlight'):
 		#TODO
+                pass
 	elif(intent == 'RemoveHighlight'):
 		#TODO
+                pass
 	elif(intent == 'GetHighlights'):
 		#TODO
+                pass
 	elif(intent == 'SayCity'):
 		city = config['request']['intent']['slots']['city']['value']
 		return(build_response('Hello, Dave, the city is {city}.'.format(city=city)))
@@ -88,4 +92,8 @@ def set_config(config):
 	table.put_item(Item=config)
 
 if(__name__ == '__main__'):
-	print('{0}'.format(read_briefing({'user_id': 'matt', 'city': 'Fair_Lawn', 'state': 'NJ', 'highlights': ['7:00 AM', '8:00 AM', '10:00 PM']})))
+	print('{0}'.format(read_briefing({
+                'user_id': 'matt',
+                'city': 'Fair_Lawn',
+                'state': 'NJ',
+                'highlights': ['7:00 AM', '8:00 AM', '11:00 PM']})))
