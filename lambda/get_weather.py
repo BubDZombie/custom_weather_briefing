@@ -7,9 +7,9 @@ import os
 import urllib2
 
 def lambda_handler(event, context):
-	user_id = event['user']['user_id']
+	user_id = event['session']['user']['userId']
 	config = get_config(user_id)
-	intent = event['resquest']['intent']['name']
+	intent = event['request']['intent']['name']
 	if(intent == 'FiveCast'
 			and config.get('state', None)
 			and config.get('city', None)
@@ -18,7 +18,7 @@ def lambda_handler(event, context):
 	elif(intent == 'FiveCast'):
 		help()
 	elif(intent == 'SetCity'):
-		config['city'] = config['request']['intent']['slots']['city']['value']
+		config['city'] = event['request']['intent']['slots']['City']['value']
 		set_config(config)
 	elif(intent == 'GetCity'):
 		#TODO
@@ -33,8 +33,13 @@ def lambda_handler(event, context):
 		#TODO
                 pass
 	elif(intent == 'SayCity'):
-		city = config['request']['intent']['slots']['city']['value']
-		return(build_response('Hello, Dave, the city is {city}.'.format(city=city)))
+		city = event['request']['intent']['slots']['City']['value']
+                response = []
+                for slot_name, slot_value in event['request']['intent']['slots'].iteritems():
+                        response.append(slot_name)
+                        for key, value in slot_value.iteritems():
+                                response.extend([key, value])
+		return(build_response('Hello, Dave, the city is {city}.'.format(city=' '.join(response))))
 
 def read_briefing(config):
 	state = config['state']
@@ -92,8 +97,34 @@ def set_config(config):
 	table.put_item(Item=config)
 
 if(__name__ == '__main__'):
-	print('{0}'.format(read_briefing({
-                'user_id': 'matt',
-                'city': 'Fair_Lawn',
-                'state': 'NJ',
-                'highlights': ['7:00 AM', '8:00 AM', '11:00 PM']})))
+        payload = {
+  "session": {
+    "sessionId": "SessionId.9744c5f0-958c-4cb0-b7eb-973cfc38e3e0",
+    "application": {
+      "applicationId": "amzn1.ask.skill.9fedf725-c488-4481-9fc1-91f7b35bb064"
+    },
+    "attributes": {},
+    "user": {
+      "userId": "amzn1.ask.account.AHE7DVOH2ALI3QASZVPSGM2M7WJ55W637R2H66UOQRKHRGI5K6VPGYCYJD3IIPSGNLQS7RP7CATH4QH7KGDQJOFQWHXBPUBLS7EBMNCKD6CLV4LPPOOZVX54UA7LABYAI3KFDMLX2II7M7EAU3MDYBO4OQYEDNQDOOOEFBO3PHR2QDVLF5DCKT3FUVUMJ2YQTZTEBVKKOWJDHWQ"
+    },
+    "new": False
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "EdwRequestId.e0b510e7-fe1b-4679-92a9-90219f088130",
+    "locale": "en-US",
+    "timestamp": "2017-02-04T03:38:06Z",
+    "intent": {
+      "name": "SayCity",
+      "slots": {
+        "City": {
+          "name": "City",
+          "value": "farfigflugen"
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
+
+	print('{0}'.format(lambda_handler(payload, None)))
