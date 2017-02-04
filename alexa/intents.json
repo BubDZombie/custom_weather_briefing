@@ -19,7 +19,7 @@
 	    "intent": "SetState",
 	    "slots": [
 		{
-		    "name": "City",
+		    "name": "State",
 		    "type": "AMAZON.US_STATE"
 		}
 	    ]

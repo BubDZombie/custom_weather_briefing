@@ -13,7 +13,6 @@ SetState my state is {State}
 GetState what is my state
 GetState what is my current state
 GetState read me my state
-SayCity say the city {City}
 AddHighlight add highlight {Time}
 AddHighlight add {Time} to my list
 AddHighlight I want weather for {Time}

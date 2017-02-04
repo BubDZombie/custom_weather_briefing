@@ -32,7 +32,11 @@ Thank you for using Five Cast!
 def lambda_handler(event, context):
 	user_id = event['session']['user']['userId']
 	config = get_config(user_id)
-	intent = event['request']['intent']['name']
+        intent = 'Help'
+        try:
+                intent = event['request']['intent']['name']
+        except:
+                pass
 	if(intent == 'FiveCast'
 			and config.get('state', None)
 			and config.get('city', None)
@@ -144,7 +148,7 @@ def build_response(text, should_end_session=False):
 		'response': {
 			'outputSpeech': {
 				'type': 'PlainText',
-				'text': text
+				'text': text.replace('\n', ' ')
 			},
 			'shouldEndSession': should_end_session
 		}
