@@ -16,6 +16,15 @@
       "intent": "GetCity"
     },
     {
+      "intent": "SayCity",
+      "slots": [
+        {
+          "name": "City",
+          "type": "AMAZON.US_CITY"
+        }
+      ]
+    },
+    {
       "intent": "AddHighlight",
       "slots": [
         {

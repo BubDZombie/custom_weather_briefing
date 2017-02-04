@@ -7,6 +7,7 @@ SetCity I am in {City}
 GetCity what is my city
 GetCity what is my current city
 GetCity read me my city
+SayCity say the city {City}
 AddHighlight add highlight {Time}
 AddHighlight add {Time} to my list
 AddHighlight I want weather for {Time}

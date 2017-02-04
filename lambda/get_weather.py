@@ -28,6 +28,9 @@ def lambda_handler(event, context):
 		#TODO
 	elif(intent == 'GetHighlights'):
 		#TODO
+	elif(intent == 'SayCity'):
+		city = config['request']['intent']['slots']['city']['value']
+		return(build_response('Hello, Dave, the city is {city}.'.format(city=city)))
 
 def read_briefing(config):
 	state = config['state']
