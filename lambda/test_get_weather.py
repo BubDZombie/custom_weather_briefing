@@ -131,7 +131,7 @@ class TestGetWeather(unittest.TestCase):
                                 "slots": {
                                         "Time": {
                                                 "name": "Time",
-                                                "value": "7:00 AM"
+                                                "value": "23:00"
                                         }
                                 }
                         }
@@ -160,7 +160,7 @@ class TestGetWeather(unittest.TestCase):
                                 "slots": {
                                         "Time": {
                                                 "name": "Time",
-                                                "value": "7:00 AM"
+                                                "value": "23:00"
                                         }
                                 }
                         }
@@ -214,9 +214,6 @@ class TestGetWeather(unittest.TestCase):
                 "version": "1.0"
         }
 
-    def test_five_cast(self):
-        response = get_weather.lambda_handler(self.five_cast_payload, None)
-        print('{0}'.format(response))
     def test_set_city(self):
         response = get_weather.lambda_handler(self.set_city_payload, None)
         print(response['response']['outputSpeech']['text'])
@@ -229,6 +226,9 @@ class TestGetWeather(unittest.TestCase):
     def test_add_highlight(self):
         response = get_weather.lambda_handler(self.add_highlight_payload, None)
         print(response['response']['outputSpeech']['text'])
+    def test_five_cast(self):
+        response = get_weather.lambda_handler(self.five_cast_payload, None)
+        print(response['response']['outputSpeech']['text'])
     def test_remove_highlight(self):
         response = get_weather.lambda_handler(self.remove_highlight_payload, None)
         print(response['response']['outputSpeech']['text'])
@@ -238,6 +238,12 @@ class TestGetWeather(unittest.TestCase):
     def test_fivecast_help(self):
         response = get_weather.lambda_handler(self.help_payload, None)
         print(response['response']['outputSpeech']['text'])
+    def test_everything(self):
+        get_weather.lambda_handler(self.set_city_payload, None)
+        get_weather.lambda_handler(self.set_state_payload, None)
+        get_weather.lambda_handler(self.add_highlight_payload, None)
+        response = get_weather.lambda_handler(self.five_cast_payload, None)
+        print(response['response']['outputSpeech']['text'])        
 
 if __name__ == '__main__':
     unittest.main()

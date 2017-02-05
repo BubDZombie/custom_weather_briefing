@@ -20,4 +20,5 @@ RemoveHighlight remove highlight {Time}
 RemoveHighlight take {Time} away
 GetHighlights get highlights
 GetHighlights what are my times
+GetHighlights what are my highlights
 Stop stop
