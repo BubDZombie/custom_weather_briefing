@@ -1,5 +1,6 @@
 FiveCast five cast
 SetCity set my city to {City}
+SetCity set city {City}
 SetCity set city to {City}
 SetCity my city is {City}
 SetCity my town is {City}
@@ -8,6 +9,7 @@ GetCity what is my city
 GetCity what is my current city
 GetCity read me my city
 SetState set my state to {State}
+SetState set state {State}
 SetState set state to {State}
 SetState my state is {State}
 GetState what is my state

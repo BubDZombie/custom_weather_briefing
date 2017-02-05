@@ -153,8 +153,9 @@ def get_highlights(config):
         if(not config.get('highlights', None)):
                 highlights = 'not set'
         elif(len(config['highlights']) > 1):
-                config['highlights'].insert(-1, 'and')
-                highlights = ', '.join(twelve_hour_highlights(config['highlights']))
+                highlights = twelve_hour_highlights(config['highlights'])
+                highlights.insert(-1, 'and')
+                highlights = ', '.join(highlights)
         else:
                 highlights = ', '.join(twelve_hour_highlights(config['highlights']))
         return(build_response(get_highlights_message.format(highlights=highlights)))
@@ -206,9 +207,9 @@ def read_briefing(config):
                 pass
 
         if(highlight_responses):
-                return(build_response(' '.join(highlight_responses), True))
+                return(build_response(' '.join(highlight_responses)))
         else:
-                return(build_response(no_weather_message.format(city=config['city'], state=config['state']), True))
+                return(build_response(no_weather_message.format(city=config['city'], state=config['state'])))
 
 def build_response(text, should_end_session=False):
 	return({

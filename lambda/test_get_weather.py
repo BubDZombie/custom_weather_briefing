@@ -138,6 +138,35 @@ class TestGetWeather(unittest.TestCase):
                 },
                 "version": "1.0"
         }
+        self.add_highlight_payload_two = {
+                "session": {
+                        "sessionId": "SessionId.9744c5f0-958c-4cb0-b7eb-973cfc38e3e0",
+                        "application": {
+                                "applicationId": "test_app_id"
+                        },
+                        "attributes": {},
+                        "user": {
+                                "userId": "test_user_id"
+                        },
+                        "new": False
+                },
+                "request": {
+                        "type": "IntentRequest",
+                        "requestId": "test_request_id",
+                        "locale": "en-US",
+                        "timestamp": "2017-02-04T03:38:06Z",
+                        "intent": {
+                                "name": "AddHighlight",
+                                "slots": {
+                                        "Time": {
+                                                "name": "Time",
+                                                "value": "22:00"
+                                        }
+                                }
+                        }
+                },
+                "version": "1.0"
+        }
         self.remove_highlight_payload = {
                 "session": {
                         "sessionId": "SessionId.9744c5f0-958c-4cb0-b7eb-973cfc38e3e0",
@@ -233,6 +262,8 @@ class TestGetWeather(unittest.TestCase):
         response = get_weather.lambda_handler(self.remove_highlight_payload, None)
         print(response['response']['outputSpeech']['text'])
     def test_get_highlights(self):
+        get_weather.lambda_handler(self.add_highlight_payload, None)
+        get_weather.lambda_handler(self.add_highlight_payload_two, None)
         response = get_weather.lambda_handler(self.get_highlights_payload, None)
         print(response['response']['outputSpeech']['text'])
     def test_fivecast_help(self):
