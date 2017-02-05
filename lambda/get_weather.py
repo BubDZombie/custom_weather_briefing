@@ -85,7 +85,7 @@ state_code_map = {
 def lambda_handler(event, context):
 	user_id = event['session']['user']['userId']
 	config = get_config(user_id)
-        intent = 'Help'
+        intent = 'FiveCast'
         try:
                 intent = event['request']['intent']['name']
         except:
