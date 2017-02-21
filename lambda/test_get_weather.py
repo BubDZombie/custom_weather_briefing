@@ -160,7 +160,7 @@ class TestGetWeather(unittest.TestCase):
                                 "slots": {
                                         "Time": {
                                                 "name": "Time",
-                                                "value": "22:00"
+                                                "value": "13:00"
                                         }
                                 }
                         }
@@ -273,6 +273,7 @@ class TestGetWeather(unittest.TestCase):
         get_weather.lambda_handler(self.set_city_payload, None)
         get_weather.lambda_handler(self.set_state_payload, None)
         get_weather.lambda_handler(self.add_highlight_payload, None)
+        get_weather.lambda_handler(self.add_highlight_payload_two, None)
         response = get_weather.lambda_handler(self.five_cast_payload, None)
         print(response['response']['outputSpeech']['text'])        
 
