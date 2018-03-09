@@ -1,7 +1,49 @@
+body {
+		font-family: 'Roboto', sans-serif;
+		font-size: 3vw;
+}
+
 #key_container {
-		display: inline-block;
+		/*display: inline-block;*/
+		margin: 10vw auto auto auto;
 }
 
 #local_storage_error {
+}
+
+.hidden {
 		visibility: hidden;
+		/* width: 0px; */
+		/* height: 0px; */
+}
+
+#weather {
+		margin: 1vw auto auto auto;
+		padding: 1vw;
+		width: 66vw;
+}
+
+.day {
+		font-weight: 100;
+		padding: 2vw 2vw 0 2vw;
+}
+
+.highlight {
+		padding: 0.5vw 2vw;
+}
+
+.time, .condition, .temperature {
+		display: inline-block;
+		/* padding-left: 2vw; */
+		/* padding-right: 2vw; */
+		width: 20vw;
+}
+
+.temperature {
+		color: blue;
+}
+
+.time {
+		font-weight: 50;
+		font-style: normal;
 }
