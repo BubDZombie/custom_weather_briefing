@@ -1,0 +1,7 @@
+#key_container {
+		display: inline-block;
+}
+
+#local_storage_error {
+		visibility: hidden;
+}

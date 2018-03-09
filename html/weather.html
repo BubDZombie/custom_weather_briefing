@@ -1,0 +1,21 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Commute Weather</title>
+  <link rel="stylesheet" href="../css/styles.css?v=1.0">
+</head>
+
+<body onload="on_load();">
+  <script src="../js/wunderground.js"></script>
+  <div id="key_container">
+		<input type="text" id="api_key" placeholder="Wunderground API Key" />
+		<button type="button" onclick="save_api_key();">Save</button>
+	</div>
+	<div id="local_storage_error">
+		Local Storage Error
+	</div>
+	<div id="weather" />
+</body>
+</html>
