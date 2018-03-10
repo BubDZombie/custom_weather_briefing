@@ -1,0 +1,80 @@
+body {
+		font-family: 'Roboto Condensed', sans-serif;
+		font-size: 8vw;
+		font-weight: 300;
+}
+
+#key_container {
+		margin: 10vw auto auto auto;
+		text-align: center;
+		width: 66vw;
+}
+
+#local_storage_error {
+}
+
+.error {
+		color: #A72222;
+		margin: auto;
+		text-align: center;
+		width: 66vw;
+}
+
+.hidden {
+		visibility: hidden;
+}
+
+#weather {
+		margin: 1vw auto auto auto;
+		padding: 1vw;
+		width: 66vw;
+}
+
+.day {
+		font-family: 'Roboto';
+		font-size: 8vw;
+		font-weight: 100;
+		padding: 2vw 2vw 0 2vw;
+}
+
+.highlight {
+		padding: 0.5vw 2vw;
+}
+
+.time, .condition, .temperature {
+		display: inline-block;
+		margin: auto;
+}
+
+.time {
+		text-align: right;
+		width: 30vw;
+}
+
+.condition {
+		width: 22vw;
+}
+
+.condition img {
+		display: block;
+		height: 6vw;
+		margin-left: auto;
+		margin-right: auto;
+}
+
+.temperature {
+		color: blue;
+		width: 10vw;
+}
+
+.cold {
+		color: #20a4cf;
+}
+
+.temperate {
+		color: #31b531;
+}
+
+.hot {
+		color: #cb523a;
+}
