@@ -1,80 +1,115 @@
-body {
-		font-family: 'Roboto Condensed', sans-serif;
-		font-size: 8vw;
-		font-weight: 300;
+body, input, button {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 8vw;
+    font-weight: 300;
+}
+
+input, button {
+    font-size: 3vw;
+    font-weight: 100;
+    padding-left: 2vw;
+    padding-right: 2vw;
 }
 
 #key_container {
-		margin: 10vw auto auto auto;
-		text-align: center;
-		width: 66vw;
+    margin: 10vw auto auto auto;
+    text-align: center;
+    width: 66vw;
 }
 
 #local_storage_error {
 }
 
 .error {
-		color: #A72222;
-		margin: auto;
-		text-align: center;
-		width: 66vw;
+    color: #A72222;
+    margin: auto;
+    text-align: center;
+    width: 66vw;
 }
 
 .hidden {
-		visibility: hidden;
+    height: 0px;
+    margin: 0px;
+    padding: 0px;
+    visibility: hidden;
 }
 
-#weather {
-		margin: 15vw auto auto auto;
-		padding: 1vw;
-		width: 66vw;
+.pacifier {
+    margin: 15vw auto auto auto;
+    width: 10vw;
+}
+
+.pacifier img {
+    width: 10vw;
+}
+
+.weather {
+    margin: 15vw auto auto auto;
+    padding: 1vw;
+    width: 66vw;
+    z-index: 0;
 }
 
 .day {
-		font-family: 'Roboto';
-		font-size: 10vw;
-		font-weight: 100;
-		padding: 2vw 2vw 0 2vw;
+    font-family: 'Roboto';
+    font-size: 10vw;
+    font-weight: 100;
+    padding: 2vw 2vw 0 2vw;
 }
 
 .highlight {
-		padding: 0.5vw 2vw;
+    padding: 0.5vw 2vw;
 }
 
 .time, .condition, .temperature {
-		display: inline-block;
-		margin: auto;
+    display: inline-block;
+    margin: auto;
 }
 
 .time {
-		text-align: right;
-		width: 30vw;
+    text-align: right;
+    width: 30vw;
 }
 
 .condition {
-		width: 22vw;
+    width: 22vw;
 }
 
 .condition img {
-		display: block;
-		height: 6vw;
-		margin-left: auto;
-		margin-right: auto;
+    display: block;
+    height: 6vw;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .temperature {
-		color: blue;
-		width: 10vw;
+    color: blue;
+    width: 10vw;
 }
 
 .cold {
-		color: #20a4cf;
+    color: #20a4cf;
 }
 
 .temperate {
-		color: #31b531;
+    color: #31b531;
 }
 
 .hot {
-		color: #cb523a;
+    color: #cb523a;
+}
+
+.footer {
+    background: white;
+    bottom: 0;
+    padding-bottom: 1vw;
+    position: fixed;
+    text-align: center;
+    width: 100%;
+    z-index: 1;
+}
+
+.footer img {
+    max-width: 700px;
+    width: 60vw;
 }
