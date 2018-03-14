@@ -2,18 +2,28 @@ body, input, button {
     font-family: 'Roboto Condensed', sans-serif;
     font-size: 8vw;
     font-weight: 300;
+    text-align: center;
 }
 
-input, button {
+input, button, select {
     font-size: 3vw;
     font-weight: 100;
     padding-left: 2vw;
     padding-right: 2vw;
 }
 
+.edit, .edit a {
+    color: #CCC;
+    font-size: 4vw;
+    padding: 1vw;
+    position: fixed;
+    right: 0;
+    text-decoration: none;
+    top: 0;
+}
+
 #key_container {
     margin: 10vw auto auto auto;
-    text-align: center;
     width: 66vw;
 }
 
@@ -23,7 +33,6 @@ input, button {
 .error {
     color: #A72222;
     margin: auto;
-    text-align: center;
     width: 66vw;
 }
 
@@ -55,6 +64,7 @@ input, button {
     font-size: 10vw;
     font-weight: 100;
     padding: 2vw 2vw 0 2vw;
+    text-align: left;
 }
 
 .highlight {
@@ -104,7 +114,6 @@ input, button {
     bottom: 0;
     padding-bottom: 1vw;
     position: fixed;
-    text-align: center;
     width: 100%;
     z-index: 1;
 }
