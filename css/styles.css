@@ -22,6 +22,12 @@ input, button, select {
     top: 0;
 }
 
+.highlight_select_container, .highlight_select_container p {
+    font-size: 3vw;
+    margin: 1vw;
+    padding: 1vw;
+}
+
 #key_container {
     margin: 10vw auto auto auto;
     width: 66vw;
@@ -53,7 +59,7 @@ input, button, select {
 }
 
 .weather {
-    margin: 15vw auto auto auto;
+    margin: 3vw auto auto auto;
     padding: 1vw;
     width: 66vw;
     z-index: 0;

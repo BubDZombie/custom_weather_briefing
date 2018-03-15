@@ -3,6 +3,7 @@ conditions['Light Drizzle'] = '../img/cloud_rain.png';
 conditions['Heavy Drizzle'] = '../img/cloud_rain.png';
 conditions['Drizzle'] = '../img/cloud_rain.png';
 conditions['Light Rain'] = '../img/cloud_rain.png';
+conditions['Chance of Rain'] = '../img/cloud_rain.png';
 conditions['Heavy Rain'] = '../img/cloud_rain.png';
 conditions['Rain'] = '../img/cloud_rain.png';
 conditions['Light Snow'] = '../img/cloud_snow.png';

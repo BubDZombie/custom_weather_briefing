@@ -14,24 +14,24 @@
   <script src="../js/conditions.js"></script>
   <script src="../js/wunderground.js"></script>
   <div id="edit" class="edit">
-    <a href="javascript:void;" onclick="toggle_edit();">Edit</a>
+    <a href="#" onclick="toggle_edit();">Edit</a>
   </div>
   <div id="pacifier" class="hidden">
     <img src="../img/pacifier.gif" />
   </div>
-  <div id="time_select" class="hidden">
+  <div id="highlight_select_container" class="hidden">
     <p>Select Highlights</p>
-    <select id="highlight">
+    <select id="highlight_select">
       <option value="0">12:00 AM</option>
       <option value="1">01:00 AM</option>
-      <option value="2">02:00 PM</option>
-      <option value="3">03:00 PM</option>
-      <option value="4">04:00 PM</option>
-      <option value="5">05:00 PM</option>
-      <option value="6">06:00 PM</option>
-      <option value="7">07:00 PM</option>
-      <option value="8">08:00 PM</option>
-      <option value="9">09:00 PM</option>
+      <option value="2">02:00 AM</option>
+      <option value="3">03:00 AM</option>
+      <option value="4">04:00 AM</option>
+      <option value="5">05:00 AM</option>
+      <option value="6">06:00 AM</option>
+      <option value="7">07:00 AM</option>
+      <option value="8">08:00 AM</option>
+      <option value="9">09:00 AM</option>
       <option value="10">10:00 AM</option>
       <option value="11">11:00 AM</option>
       <option value="12">12:00 PM</option>
@@ -47,7 +47,9 @@
       <option value="22">10:00 PM</option>
       <option value="23">11:00 PM</option>
     </select>
-    <button type="button" onclick="add_highlight();">Add</button>
+    <button type="button" onclick="edit_add_highlight();">Add</button>
+    <div id="highlights" class="highlights">
+    </div>
   </div>
   <div id="weather" class="weather">
   </div>

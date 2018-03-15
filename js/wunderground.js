@@ -1,4 +1,4 @@
-var highlights = [8, 12, 18];
+//var highlights = [8, 12, 18];
 var state = 'NJ';
 var city = 'Fair_Lawn';
 //var state = 'CA';
@@ -15,7 +15,7 @@ function on_load(){
         error_div.innerHTML = 'Local Storage Error';
         error_div.className = 'error';
     } else {
-        api_key = localStorage.getItem('api_key');
+        var api_key = localStorage.getItem('api_key');
         if(api_key){
             get_weather(state, city);
         } else {
@@ -26,12 +26,73 @@ function on_load(){
 }
 
 function toggle_edit(){
-    time_select = document.getElementById('time_select');
-    if(time_select.className == 'hidden'){
-        time_select.className = 'time_select';
+    var highlight_select_container = document.getElementById('highlight_select_container');
+    if(highlight_select_container.className == 'hidden'){
+        edit_render_highlights();
+        highlight_select_container.className = 'highlight_select_container';
     } else {
-        time_select.className = 'hidden';
+        highlight_select_container.className = 'hidden';
     }
+}
+
+function edit_add_highlight(){
+    var highlights = localStorage.getItem('highlights');
+    if(!highlights){
+        highlights = [];
+    } else {
+        highlights = JSON.parse(highlights);
+    }
+    var new_highlight = parseInt(document.getElementById("highlight_select").value);
+    highlights = unique_sorted_insert(new_highlight, highlights);
+    localStorage.setItem('highlights', JSON.stringify(highlights));
+    edit_render_highlights();
+}
+
+function unique_sorted_insert(new_item, items){
+    if(items.length == 0){
+        return([new_item]);
+    } else {
+        var i = 0;
+        while(new_item > items[i] && i < items.length){
+            i++;
+        }
+        if(items[i] != new_item){
+            items.splice(i, 0, new_item);
+        }
+    }
+    return(items);
+}
+
+function edit_render_highlights(){
+    var highlights = localStorage.getItem('highlights');
+    if(!highlights){
+        return;
+    }
+    highlights = JSON.parse(highlights);
+    var inner_html = '<ul>';
+    console.log("edit_render_highlights highlights: " + highlights);
+    //for(var highlight in highlights){
+    for(var i = 0; i < highlights.length; i++){
+        inner_html += '<li>' + printable_time(highlights[i]) + '</li>';
+    }
+    inner_html += '</ul>';
+    document.getElementById('highlights').innerHTML = inner_html;
+}
+
+// Given an hour between 0 and 23 inclusive, return a string 12 hour time.
+function printable_time(hour){
+    console.log("printable_time(" + hour + ")");
+    var ampm = 'AM';
+    if(hour > 12){
+        ampm = 'PM';
+    }
+    if(hour == 0){
+        hour = 12;
+    } else {
+        hour = hour % 12;
+    }
+    console.log("Became " + hour + " " + ampm);
+    return(String(hour).padStart(2, '0') + ':00 ' + ampm);
 }
 
 function save_api_key(){
@@ -43,7 +104,7 @@ function save_api_key(){
 
 function get_weather(state, city){
     document.getElementById('pacifier').className = 'pacifier';
-    api_key = localStorage.getItem('api_key');
+    var api_key = localStorage.getItem('api_key');
     var xmlhttp = new XMLHttpRequest();
     var url = 'https://api.wunderground.com/api/'
         + api_key + '/'
@@ -69,12 +130,18 @@ function get_weather(state, city){
 }
 
 function process_weather(weather_data, highlights){
+    var highlights = localStorage.getItem('highlights');
+    if(!highlights){
+        highlights = [];
+    } else {
+        highlights = JSON.parse(highlights);
+    }
     var day = null;
     for(i = 0; i < weather_data.length; i++){
-        hour = weather_data[i];
-        current_day = hour['FCTTIME']['month_name']
+        var hour = weather_data[i];
+        var current_day = hour['FCTTIME']['month_name']
             + ' ' + hour['FCTTIME']['mday']
-        highlight_index = highlights.indexOf(parseInt(hour['FCTTIME']['hour']));
+        var highlight_index = highlights.indexOf(parseInt(hour['FCTTIME']['hour']));
         if(highlight_index >= 0){
             if(day != current_day){
                 add_day(current_day);
@@ -90,30 +157,30 @@ function process_weather(weather_data, highlights){
 }
 
 function add_day(day){
-    weather_element = document.getElementById('weather');
-    new_content = '<div class="day">' + day + '</div>';
+    var weather_element = document.getElementById('weather');
+    var new_content = '<div class="day">' + day + '</div>';
     weather_element.innerHTML += new_content;
 }
 
 function add_highlight(time, condition, temperature){
-    weather_element = document.getElementById('weather');
+    var weather_element = document.getElementById('weather');
 
-    temperature = parseInt(temperature);
-    temperature_class = 'cold';
+    var temperature = parseInt(temperature);
+    var temperature_class = 'cold';
     if(temperature >= 50 && temperature < 75){
         temperature_class = 'temperate';
     }else if(temperature >= 75){
         temperature_class = 'hot';
     }
 
-    condition_image = conditions['Unknown']
+    var condition_image = conditions['Unknown']
     if(condition in conditions){
         condition_image = conditions[condition];
     } else {
         console.log(condition);
     }
 
-    new_content = '<div class="highlight">'
+    var new_content = '<div class="highlight">'
         + '<div class="time">' + time + '</div>'
         + '<div class="condition">'
         +   '<img src="' + condition_image + '" />'
