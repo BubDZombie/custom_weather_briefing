@@ -1,8 +1,7 @@
-//var highlights = [8, 12, 18];
 var state = 'NJ';
 var city = 'Fair_Lawn';
-//var state = 'CA';
-//var city = 'Los_Angeles';
+//var state = 'FL';
+//var city = 'Orlando';
 
 function on_load(){
     document.getElementById('api_key').addEventListener('keyup', function(event){
@@ -19,7 +18,6 @@ function on_load(){
         if(api_key){
             get_weather(state, city);
         } else {
-            document.getElementById('key_container').className = '';
             document.getElementById('weather').className = 'hidden';
         }
     }
@@ -27,11 +25,15 @@ function on_load(){
 
 function toggle_edit(){
     var highlight_select_container = document.getElementById('highlight_select_container');
+    var weather = document.getElementById('weather');
     if(highlight_select_container.className == 'hidden'){
         edit_render_highlights();
         highlight_select_container.className = 'highlight_select_container';
+        weather.className = 'hidden';
     } else {
         highlight_select_container.className = 'hidden';
+        weather.className = 'weather';
+        get_weather(state, city);
     }
 }
 
@@ -45,6 +47,21 @@ function edit_add_highlight(){
     var new_highlight = parseInt(document.getElementById("highlight_select").value);
     highlights = unique_sorted_insert(new_highlight, highlights);
     localStorage.setItem('highlights', JSON.stringify(highlights));
+    edit_render_highlights();
+}
+
+function edit_remove_highlight(hour){
+    var highlights = localStorage.getItem('highlights');
+    if(!highlights){
+        highlights = [];
+    } else {
+        highlights = JSON.parse(highlights);
+    }
+    var i = highlights.indexOf(hour);
+    if(i >= 0){
+        highlights.splice(i, 1);
+        localStorage.setItem('highlights', JSON.stringify(highlights));
+    }
     edit_render_highlights();
 }
 
@@ -73,7 +90,14 @@ function edit_render_highlights(){
     console.log("edit_render_highlights highlights: " + highlights);
     //for(var highlight in highlights){
     for(var i = 0; i < highlights.length; i++){
-        inner_html += '<li>' + printable_time(highlights[i]) + '</li>';
+        inner_html += '<li>'
+            + '<div class="edit_highlight">'
+            + printable_time(highlights[i])
+            + '</div>'
+            + '<div class="garbage">'
+            + '<a href="javascript:;" onclick="edit_remove_highlight(' + highlights[i] + ');">X</a>'
+            + '</div>'
+            + '</li>';
     }
     inner_html += '</ul>';
     document.getElementById('highlights').innerHTML = inner_html;
@@ -83,13 +107,13 @@ function edit_render_highlights(){
 function printable_time(hour){
     console.log("printable_time(" + hour + ")");
     var ampm = 'AM';
-    if(hour > 12){
-        ampm = 'PM';
-    }
     if(hour == 0){
         hour = 12;
-    } else {
-        hour = hour % 12;
+    } else if(hour == 12){
+        ampm = 'PM';
+    } if(hour > 12){
+        hour -= 12;
+        ampm = 'PM';
     }
     console.log("Became " + hour + " " + ampm);
     return(String(hour).padStart(2, '0') + ':00 ' + ampm);
@@ -104,6 +128,7 @@ function save_api_key(){
 
 function get_weather(state, city){
     document.getElementById('pacifier').className = 'pacifier';
+    document.getElementById('weather').className = 'hidden';
     var api_key = localStorage.getItem('api_key');
     var xmlhttp = new XMLHttpRequest();
     var url = 'https://api.wunderground.com/api/'
@@ -116,12 +141,14 @@ function get_weather(state, city){
         if(this.readyState == 4 && this.status == 200) {
             var weather_data = JSON.parse(this.responseText)['hourly_forecast'];
             document.getElementById('pacifier').className = 'hidden';
+            weather = document.getElementById('weather');
+            weather.className = 'weather';
+            weather.innerHTML = '';
             process_weather(weather_data, highlights);
         } else if(this.readyState == 4) {
             error_div = document.getElementById('error');
             error_div.className = 'error';
             error_div.innerHTML = 'Wunderground Error<br />' + this.responseText;
-            document.getElementById('key_container').className = '';
         }
     };
 
