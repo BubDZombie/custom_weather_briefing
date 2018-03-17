@@ -25,10 +25,12 @@
   </div>
   <div id="settings_container" class="hidden">
     <div id="location_container" class="location_container">
-      <select id="state">
+      <p>Select Location</p>
+      <select id="state" onchange="edit_populate_cities();">
       </select>
       <select id="city">
       </select>
+      <button type="button" onclick="edit_save_location();">Save</button>
     </div>
     <div id="highlight_select_container" class="highlight_select_container">
       <p>Select Highlights</p>

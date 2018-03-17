@@ -24,11 +24,51 @@ function onload(){
 }
 
 function open_edit(){
+    var saved_state = localStorage.getItem('state');
+    var state_select = document.getElementById('state');
+    while(state_select.options.length > 0){
+        state_select.remove(0);
+    }
+    for(state in state_cities){
+        var state_option = document.createElement('option');
+        state_option.text = state;
+        if(state == saved_state){
+            state_option.selected = 'selected';
+        }
+        state_select.add(state_option);
+    }
+    edit_populate_cities();
     document.getElementById('settings_container').className = 'settings_container';
     document.getElementById('weather').className = 'hidden';
     document.getElementById('open_edit').className = 'hidden';
     document.getElementById('close_edit').className = 'edit';
     edit_render_highlights();
+}
+
+function edit_populate_cities(){
+    var saved_city = localStorage.getItem('city');
+    var city_select = document.getElementById('city');
+    while(city_select.options.length > 0){
+        city_select.remove(0);
+    }
+    var state_select = document.getElementById('state');
+    cities = state_cities[state_select.value];
+    for(var i = 0; i < cities.length; i++){
+        var city = cities[i];
+        var city_option = document.createElement('option');
+        city_option.text = city;
+        if(city == saved_city){
+            city_option.selected = 'selected';
+        }
+        city_select.add(city_option);
+    }
+}
+
+function edit_save_location(){
+    var state_select = document.getElementById('state');
+    var city_select = document.getElementById('city')
+    localStorage.setItem('state', state_select.value);
+    localStorage.setItem('city', city_select.value);
 }
 
 function close_edit(){

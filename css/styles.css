@@ -48,18 +48,39 @@ button, select {
     text-decoration: none;
 }
 
-.location_container {
-    display: inline-block;
-}
-
-.highlight_select_container, .highlight_select_container p {
-    display: inline-block;
+.settings_container {
     font-size: 4vw;
     margin: 1vw;
     padding: 1vw;
 }
 
+.settings_container select {
+    text-align: left;
+}
+
+.location_container {
+    display: inline-block;
+    vertical-align: text-top;
+}
+
+.location_container p {
+    display: block;
+    margin-bottom: 0;
+}
+
+.location_container select {
+    display: block;
+    margin: 1vw;
+    width: 80%;
+}
+
+.highlight_select_container, .highlight_select_container p {
+    display: inline-block;
+    vertical-align: text-top;
+}
+
 .highlight_select_container p {
+    display: block;
     margin-bottom: 0;
 }
 
