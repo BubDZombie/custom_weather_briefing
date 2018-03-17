@@ -3,7 +3,7 @@ var city = 'Fair_Lawn';
 //var state = 'FL';
 //var city = 'Orlando';
 
-function on_load(){
+function onload(){
     document.getElementById('api_key').addEventListener('keyup', function(event){
         if(event.keyCode === 13){
             save_api_key();
@@ -23,18 +23,20 @@ function on_load(){
     }
 }
 
-function toggle_edit(){
-    var highlight_select_container = document.getElementById('highlight_select_container');
-    var weather = document.getElementById('weather');
-    if(highlight_select_container.className == 'hidden'){
-        edit_render_highlights();
-        highlight_select_container.className = 'highlight_select_container';
-        weather.className = 'hidden';
-    } else {
-        highlight_select_container.className = 'hidden';
-        weather.className = 'weather';
-        get_weather(state, city);
-    }
+function open_edit(){
+    document.getElementById('settings_container').className = 'settings_container';
+    document.getElementById('weather').className = 'hidden';
+    document.getElementById('open_edit').className = 'hidden';
+    document.getElementById('close_edit').className = 'edit';
+    edit_render_highlights();
+}
+
+function close_edit(){
+    document.getElementById('settings_container').className = 'hidden';
+    var weather = document.getElementById('weather').className = 'weather';
+    document.getElementById('close_edit').className = 'hidden';
+    document.getElementById('open_edit').className = 'edit';
+    get_weather(state, city);
 }
 
 function edit_add_highlight(){

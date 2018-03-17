@@ -48,7 +48,12 @@ button, select {
     text-decoration: none;
 }
 
+.location_container {
+    display: inline-block;
+}
+
 .highlight_select_container, .highlight_select_container p {
+    display: inline-block;
     font-size: 4vw;
     margin: 1vw;
     padding: 1vw;
