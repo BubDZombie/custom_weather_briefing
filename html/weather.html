@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" href="../img/dark_cloud_lightning_snow.png">
 </head>
 
-<body onload="onload();">
+<body onload="get_weather();">
   <script src="../js/conditions.js"></script>
   <script src="../js/wunderground.js"></script>
   <script src="../js/cities.js"></script>
@@ -25,7 +25,7 @@
   </div>
   <div id="settings_container" class="hidden">
     <div id="location_container" class="location_container">
-      <p>Select Location</p>
+      <p id="p_select_location">Select Location</p>
       <select id="state" onchange="edit_populate_cities();">
       </select>
       <select id="city">
@@ -33,7 +33,7 @@
       <button type="button" onclick="edit_save_location();">Save</button>
     </div>
     <div id="highlight_select_container" class="highlight_select_container">
-      <p>Select Highlights</p>
+      <p>Select&nbsp;Highlights</p>
       <select id="highlight_select">
         <option value="0">12:00 AM</option>
         <option value="1">01:00 AM</option>
@@ -68,10 +68,6 @@
   <div id="weather" class="weather">
   </div>
   <div id="error" class="hidden">
-  </div>
-  <div id="key_container" class="hidden">
-    <input type="text" id="api_key" placeholder="Wunderground API Key" />
-    <button type="button" onclick="save_api_key();">Save</button>
   </div>
   <div id="footer" class="footer">
     <a href="https://www.wunderground.com/?apiref=c97b6ed964c4e134">

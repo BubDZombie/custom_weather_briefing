@@ -1,27 +1,4 @@
-var state = 'NJ';
-var city = 'Fair_Lawn';
-//var state = 'FL';
-//var city = 'Orlando';
-
-function onload(){
-    document.getElementById('api_key').addEventListener('keyup', function(event){
-        if(event.keyCode === 13){
-            save_api_key();
-        }
-    });
-    if(typeof(Storage) == 'undefined'){
-        error_div = document.getElementById('error');
-        error_div.innerHTML = 'Local Storage Error';
-        error_div.className = 'error';
-    } else {
-        var api_key = localStorage.getItem('api_key');
-        if(api_key){
-            get_weather(state, city);
-        } else {
-            document.getElementById('weather').className = 'hidden';
-        }
-    }
-}
+var api_key = '2109b5cfe5d83404';
 
 function open_edit(){
     var saved_state = localStorage.getItem('state');
@@ -69,6 +46,19 @@ function edit_save_location(){
     var city_select = document.getElementById('city')
     localStorage.setItem('state', state_select.value);
     localStorage.setItem('city', city_select.value);
+    var p = document.getElementById('p_select_location');
+    red = 0x13;
+    green = 0xD7;
+    blue = 0x38;
+    p.style.color = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
+    setTimeout(function(){
+        while(red > 0 || green > 0 || blue > 0){
+            if(red > 0){ red -= 1; }
+            if(green > 0){ green -= 1; }
+            if(blue > 0){ blue -= 1; }
+        }
+        p.style.color = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
+    }, 2000);
 }
 
 function close_edit(){
@@ -76,7 +66,7 @@ function close_edit(){
     var weather = document.getElementById('weather').className = 'weather';
     document.getElementById('close_edit').className = 'hidden';
     document.getElementById('open_edit').className = 'edit';
-    get_weather(state, city);
+    get_weather();
 }
 
 function edit_add_highlight(){
@@ -129,7 +119,6 @@ function edit_render_highlights(){
     }
     highlights = JSON.parse(highlights);
     var inner_html = '<ul>';
-    console.log("edit_render_highlights highlights: " + highlights);
     //for(var highlight in highlights){
     for(var i = 0; i < highlights.length; i++){
         inner_html += '<li>'
@@ -147,7 +136,6 @@ function edit_render_highlights(){
 
 // Given an hour between 0 and 23 inclusive, return a string 12 hour time.
 function printable_time(hour){
-    console.log("printable_time(" + hour + ")");
     var ampm = 'AM';
     if(hour == 0){
         hour = 12;
@@ -157,21 +145,20 @@ function printable_time(hour){
         hour -= 12;
         ampm = 'PM';
     }
-    console.log("Became " + hour + " " + ampm);
     return(String(hour).padStart(2, '0') + ':00 ' + ampm);
 }
 
-function save_api_key(){
-    localStorage.setItem('api_key', document.getElementById('api_key').value);
-    document.getElementById('key_container').className = 'hidden';
-    document.getElementById('weather').className = 'weather';
-    get_weather(state, city);
-}
-
-function get_weather(state, city){
+function get_weather(){
+    var state = localStorage.getItem('state');
+    var city = localStorage.getItem('city');
+    if(!state || !city){
+        open_edit();
+        return;
+    }
+    state = state_map[state];
+    city = city.split(' ').join('_');
     document.getElementById('pacifier').className = 'pacifier';
     document.getElementById('weather').className = 'hidden';
-    var api_key = localStorage.getItem('api_key');
     var xmlhttp = new XMLHttpRequest();
     var url = 'https://api.wunderground.com/api/'
         + api_key + '/'
@@ -186,7 +173,8 @@ function get_weather(state, city){
             weather = document.getElementById('weather');
             weather.className = 'weather';
             weather.innerHTML = '';
-            process_weather(weather_data, highlights);
+            document.getElementById('error').className = 'hidden';
+            process_weather(weather_data);
         } else if(this.readyState == 4) {
             error_div = document.getElementById('error');
             error_div.className = 'error';
@@ -198,13 +186,13 @@ function get_weather(state, city){
     xmlhttp.send();
 }
 
-function process_weather(weather_data, highlights){
-    var highlights = localStorage.getItem('highlights');
+function process_weather(weather_data){
+    var highlights = JSON.parse(localStorage.getItem('highlights'));
     if(!highlights){
-        highlights = [];
-    } else {
-        highlights = JSON.parse(highlights);
+        open_edit();
+        return;
     }
+    render_location();
     var day = null;
     for(i = 0; i < weather_data.length; i++){
         var hour = weather_data[i];
@@ -213,11 +201,10 @@ function process_weather(weather_data, highlights){
         var highlight_index = highlights.indexOf(parseInt(hour['FCTTIME']['hour']));
         if(highlight_index >= 0){
             if(day != current_day){
-                add_day(current_day);
+                render_day(current_day);
                 day = current_day;
             }
-            //delete highlights[highlight_index];
-            add_highlight(
+             render_highlight(
                 hour['FCTTIME']['civil'],
                 hour['condition'],
                 hour['feelslike']['english']);
@@ -225,13 +212,25 @@ function process_weather(weather_data, highlights){
     }
 }
 
-function add_day(day){
+function render_location(){
+    var city = localStorage.getItem('city');
+    var state = localStorage.getItem('state');
+    if(!city || !state){
+        open_edit();
+        return;
+    }
+    var weather_element = document.getElementById('weather');
+    var new_content = '<div class="location">' + city + ', ' + state + '</div>';
+    weather_element.innerHTML += new_content;
+}
+
+function render_day(day){
     var weather_element = document.getElementById('weather');
     var new_content = '<div class="day">' + day + '</div>';
     weather_element.innerHTML += new_content;
 }
 
-function add_highlight(time, condition, temperature){
+function render_highlight(time, condition, temperature){
     var weather_element = document.getElementById('weather');
 
     var temperature = parseInt(temperature);
