@@ -128,6 +128,7 @@ conditions['Overcast'] = '../img/dark_cloud_light_cloud.png';
 conditions['Clear'] = '../img/sun.png';
 conditions['Partly Cloudy'] = '../img/sun_cloud.png';
 conditions['Mostly Cloudy'] = '../img/sun_cloud.png';
+conditions['Clouds'] = '../img/dark_cloud_light_cloud.png';
 conditions['Scattered Clouds'] = '../img/dark_cloud_light_cloud.png';
 conditions['Small Hail'] = '../img/cloud_snow_rain.png';
 conditions['Squalls'] = '../img/twister.png';

@@ -1,4 +1,5 @@
-var api_key = '2109b5cfe5d83404';
+var wunderground_api_key = '2109b5cfe5d83404';
+var open_weather_map_api_key = '18f9cc81f59f7c21dfa87929b4ebc95d'
 
 function open_edit(){
     var saved_state = localStorage.getItem('state');
@@ -66,7 +67,7 @@ function close_edit(){
     var weather = document.getElementById('weather').className = 'weather';
     document.getElementById('close_edit').className = 'hidden';
     document.getElementById('open_edit').className = 'edit';
-    get_weather();
+    get_open_weather();
 }
 
 function edit_add_highlight(){
@@ -148,8 +149,45 @@ function printable_time(hour){
     return(String(hour).padStart(2, '0') + ':00 ' + ampm);
 }
 
-function get_weather(){
+function get_open_weather(){
     var state = localStorage.getItem('state');
+    var city = localStorage.getItem('city');
+    if(!state || !city){
+        open_edit();
+        return;
+    }
+    state = state_map[state];
+    city = encodeURI(city);
+    document.getElementById('pacifier').className = 'pacifier';
+    document.getElementById('weather').className = 'hidden';
+    var xmlhttp = new XMLHttpRequest();
+    var url = 'https://api.openweathermap.org/data/2.5/forecast'
+        + '?q=' + city + ',' + state + ',us'
+        + '&units=imperial'
+        + '&APPID=' + open_weather_map_api_key;
+
+    xmlhttp.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+            var weather_data = JSON.parse(this.responseText);
+            document.getElementById('pacifier').className = 'hidden';
+            weather = document.getElementById('weather');
+            weather.className = 'weather';
+            weather.innerHTML = '';
+            document.getElementById('error').className = 'hidden';
+            process_open_weather(weather_data);
+        } else if(this.readyState == 4) {
+            error_div = document.getElementById('error');
+            error_div.className = 'error';
+            error_div.innerHTML = 'Open Weather Map Error<br />' + this.responseText;
+        }
+    };
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+
+function get_wunderground_weather(){
+	var state = localStorage.getItem('state');
     var city = localStorage.getItem('city');
     if(!state || !city){
         open_edit();
@@ -174,7 +212,7 @@ function get_weather(){
             weather.className = 'weather';
             weather.innerHTML = '';
             document.getElementById('error').className = 'hidden';
-            process_weather(weather_data);
+            process_wunderground_weather(weather_data);
         } else if(this.readyState == 4) {
             error_div = document.getElementById('error');
             error_div.className = 'error';
@@ -186,7 +224,45 @@ function get_weather(){
     xmlhttp.send();
 }
 
-function process_weather(weather_data){
+function process_open_weather(weather_data){
+    var highlights = JSON.parse(localStorage.getItem('highlights'));
+    if(!highlights){
+        open_edit();
+        return;
+    }
+    render_location();
+    var rendered_day = null;
+	var weather_i = 0;
+	var highlights_i = 0;
+	while(weather_i < weather_data['list'].length){
+		var hour_data = weather_data['list'][weather_i];
+		var tz_offset_milis = (new Date()).getTimezoneOffset() * 60 * 1000;
+		var date = date = new Date(Date.parse(hour_data['dt_txt']) - tz_offset_milis);
+		var hour = date.getHours();
+		var day = date.toDateString().split(" ").slice(0, 3).join(" ");
+		if(day != rendered_day){
+			highlights_i = 0;
+		}
+		if(hour >= highlights[highlights_i]
+				&& Math.abs(hour - highlights[highlights_i]) < 4){
+			if(day != rendered_day){
+				render_day(day);
+				rendered_day = day;
+			}
+			render_highlight(
+				printable_time(highlights[highlights_i]),
+				hour_data['weather'][0]['main'],
+				hour_data['main']['temp']);
+		}
+		while(highlights[highlights_i] <= hour
+				&& highlights_i < highlights.length){
+			highlights_i++;
+		}
+		weather_i++;
+	}
+}
+
+function process_wunderground_weather(weather_data){
     var highlights = JSON.parse(localStorage.getItem('highlights'));
     if(!highlights){
         open_edit();

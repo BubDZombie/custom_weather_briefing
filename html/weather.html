@@ -10,9 +10,9 @@
   <link rel="icon" type="image/png" href="../img/dark_cloud_lightning_snow.png">
 </head>
 
-<body onload="get_weather();">
+<body onload="get_open_weather();">
   <script src="../js/conditions.js"></script>
-  <script src="../js/wunderground.js"></script>
+  <script src="../js/custom_weather_briefing.js"></script>
   <script src="../js/cities.js"></script>
   <div id="open_edit" class="edit">
     <a href="#" onclick="open_edit();">&#9660; Edit</a>
@@ -68,11 +68,6 @@
   <div id="weather" class="weather">
   </div>
   <div id="error" class="hidden">
-  </div>
-  <div id="footer" class="footer">
-    <a href="https://www.wunderground.com/?apiref=c97b6ed964c4e134">
-      <img src="../img/wunderground_logo.png" />
-    </a>
   </div>
 </body>
 </html>
