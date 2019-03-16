@@ -232,34 +232,36 @@ function process_open_weather(weather_data){
     }
     render_location();
     var rendered_day = null;
-	var weather_i = 0;
-	var highlights_i = 0;
-	while(weather_i < weather_data['list'].length){
-		var hour_data = weather_data['list'][weather_i];
-		var tz_offset_milis = (new Date()).getTimezoneOffset() * 60 * 1000;
-		var date = date = new Date(Date.parse(hour_data['dt_txt']) - tz_offset_milis);
-		var hour = date.getHours();
-		var day = date.toDateString().split(" ").slice(0, 3).join(" ");
-		if(day != rendered_day){
-			highlights_i = 0;
-		}
-		if(hour >= highlights[highlights_i]
-				&& Math.abs(hour - highlights[highlights_i]) < 4){
-			if(day != rendered_day){
-				render_day(day);
-				rendered_day = day;
-			}
-			render_highlight(
-				printable_time(highlights[highlights_i]),
-				hour_data['weather'][0]['main'],
-				hour_data['main']['temp']);
-		}
-		while(highlights[highlights_i] <= hour
-				&& highlights_i < highlights.length){
-			highlights_i++;
-		}
-		weather_i++;
-	}
+    var last_day = null;
+    var weather_i = 0;
+    var highlights_i = 0;
+    while(weather_i < weather_data['list'].length){
+        var hour_data = weather_data['list'][weather_i];
+        var tz_offset_milis = (new Date()).getTimezoneOffset() * 60 * 1000;
+        var date = date = new Date(Date.parse(hour_data['dt_txt']) - tz_offset_milis);
+        var hour = date.getHours();
+        var day = date.toDateString().split(" ").slice(0, 3).join(" ");
+        if(last_day != day){
+            highlights_i = 0;
+            last_day = day;
+        }
+        if(hour >= highlights[highlights_i]
+                && Math.abs(hour - highlights[highlights_i]) < 3){
+            if(day != rendered_day){
+                render_day(day);
+                rendered_day = day;
+            }
+            render_highlight(
+                printable_time(highlights[highlights_i]),
+                hour_data['weather'][0]['main'],
+                hour_data['main']['temp']);
+        }
+        while(highlights[highlights_i] <= hour
+                && highlights_i < highlights.length - 1){
+            highlights_i++;
+        }
+        weather_i++;
+    }
 }
 
 function process_wunderground_weather(weather_data){
